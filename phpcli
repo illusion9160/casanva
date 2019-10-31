@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker exec -it -w /var/www/html/micro rg_aws-php-fpm php $@
