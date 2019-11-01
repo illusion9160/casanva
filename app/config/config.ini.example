@@ -1,0 +1,7 @@
+[database]
+adapter  = Mysql
+host     = rg_mariadb
+username = root
+password = password
+dbname   = demo
+charset  = utf8

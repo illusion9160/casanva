@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# 容器名稱
+containerName=rg_aws-php-fpm
+
+# 專案名稱
+projectName=micro
+
+# 工具名稱
+tools=php
+
+docker exec -it -w /var/www/html/${projectName}/app ${containerName} ${tools} $@
