@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. global
+
+PROJECT_PATH=$(get_script_dir)
+FILE_PATH=${BASH_SOURCE[0]}
+
+PATTERN='([^/]+)$'
+
+for f in "$(dirname ${FILE_PATH})/"*; do
+    if [ ${0} != "${f}" ]; then
+        [[ $f =~ $PATTERN ]]
+        echo "register ${BASH_REMATCH[1]} 命令"
+        alias ${BASH_REMATCH[1]}=${f}
+    fi
+done

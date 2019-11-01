@@ -1,0 +1,15 @@
+#!/bin/bash
+
+## gitbook
+
+##set -x
+
+. global
+
+SOURCE_PATH=$(pwd)/doc/gitbook
+
+docker run \
+    -v "${SOURCE_PATH}:/home/node/gitbook" \
+    yamaplay_docker_apps_gitbook \
+    gitbook "$@"
+    

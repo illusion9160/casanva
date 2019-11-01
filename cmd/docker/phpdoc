@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## phpdoc
+
+##set -x
+
+. global
+
+cd app/storage
+rm -rf phpdoc phpdocCache
+docker exec -it -u "${UID}:${GID}" -w /var/www/html/${PROJECT_NAME}/app rg_phpdoc phpdoc "$@"

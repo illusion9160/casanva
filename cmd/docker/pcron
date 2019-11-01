@@ -1,0 +1,6 @@
+#!/bin/bash
+##set -x
+
+. global
+
+docker exec -it -u "${UID}:${GID}" -w /var/www/html/${PROJECT_NAME}/app rg_aws-php-fpm ./pcron "$@"
