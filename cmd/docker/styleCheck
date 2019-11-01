@@ -1,0 +1,13 @@
+#!/bin/bash
+
+## code style check
+
+## set -x
+
+. global
+
+RELATIVE=$(echo $1 | sed 's/^[^\/]*\///g')
+shift
+
+docker exec -it -u "${UID}:${GID}" -w /var/www/html/${PROJECT_NAME}/app rg_aws-php-fpm vendor/phpmd/phpmd/src/bin/phpmd ${RELATIVE} $@ text cleancode,codesize,controversial,design,naming,unusedcode
+docker exec -it -u "${UID}:${GID}" -w /var/www/html/${PROJECT_NAME}/app rg_aws-php-fpm vendor/squizlabs/php_codesniffer/bin/phpcs --colors --standard=PSR2 ${RELATIVE} $@

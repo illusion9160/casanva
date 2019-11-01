@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## composer
+
+##set -x
+
+. global
+#docker exec -it -u "${UID}:${GID}" -w /var/www/html/${PROJECT_NAME}/app rg_phpfpm composer "$@"
+docker exec -it -w /var/www/html/${PROJECT_NAME}/app rg_aws-php-fpm composer "$@"
