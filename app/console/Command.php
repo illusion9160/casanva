@@ -80,10 +80,11 @@ class Command
             throw new \Exception('Error: ' . $input . ' is not a recognized command.');
         }
 
-        if (!isset($_SERVER['argv'][2]) && $input !== self::HELP_TAG) {
-            $task->getHelp();
-            exit;
-        }
+        // 這邊之後可以在 Task 裡判斷是否必定傳入參數, 在顯示 help
+        // if (!isset($_SERVER['argv'][2]) && $input !== self::HELP_TAG) {
+        //     $task->getHelp();
+        //     exit;
+        // }
 
         $count = count($_SERVER['argv']);
         $params = [];

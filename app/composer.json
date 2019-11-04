@@ -6,5 +6,8 @@
         "psr-4": {
             "Test\\Unit\\":"tests/unit/"
         }
+    },
+    "require": {
+        "sidroberts/cron": "^2.0"
     }
 }

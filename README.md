@@ -14,3 +14,6 @@
 # 執行 cmd 命令
 - cd app
 - ./phpcli cli.php [命令動作] [參數] (命令動作及參數包含 --help -h help 列出命令列表或命令幫助)
+
+# 安裝 cron 管理器套件
+- composer require sidroberts/cron

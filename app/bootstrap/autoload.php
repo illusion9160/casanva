@@ -16,12 +16,13 @@ define('BASIC_PATH', realpath(dirname(dirname(dirname(__FILE__)))) . '/');
         'App\Models'      => BASIC_PATH . 'app/models/',
         'App\Console'     => BASIC_PATH . 'app/console/',
         'App\Tasks'       => BASIC_PATH . 'app/tasks/',
+        'App\Cron'        => BASIC_PATH . 'app/cron/',
     ])
     ->register();
 
 /**
  * Register the Composer autoloader (if any)
  */
-if (file_exists(BASIC_PATH . 'vendor/autoload.php')) {
-    require_once BASIC_PATH . 'vendor/autoload.php';
+if (file_exists(BASIC_PATH . 'app/vendor/autoload.php')) {
+    require_once BASIC_PATH . 'app/vendor/autoload.php';
 }

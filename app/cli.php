@@ -10,10 +10,16 @@ require dirname(__FILE__) . '/bootstrap/autoload.php';
 // Using the CLI factory default services container
 $di = new CliDI();
 $di->get('dispatcher')->setDefaultNamespace('App\Console');
+$di->get('dispatcher')->setDefaultNamespace('App\Cron');
 $di->get('dispatcher')->setDefaultNamespace('App\Tasks');
 
 // Create a console application
 $console = new ConsoleApp();
+$di->setShared('console', $console);
+
+$schedule = new \App\Cron\Schedule($di);
+$di = $schedule->cron();
+
 $console->setDI($di);
 
 $command = new \App\Console\Command($console);

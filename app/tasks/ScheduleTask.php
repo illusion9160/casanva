@@ -6,25 +6,19 @@ namespace App\Tasks;
 use Exception;
 
 /**
-* Play List 任務類別
+* Schedule 任務類別 (排程)
 *
 */
-class PlayTask extends BasicTask
+class ScheduleTask extends BasicTask
 {
     /**
-    * cli 執行主要入口
+    * schedule 主要入口
     *
     * @param array $params
     */
     public function mainAction(array $params)
     {
-        if (!empty($params)) {
-            foreach ($params as $key => $param) {
-                print('param '.$key.' => '.$param) . PHP_EOL;
-            }
-        } else {
-            print('Hello, World !!! not pass param') . PHP_EOL;
-        }
+        $this->cron->runInBackground();
     }
 
     /**
@@ -34,9 +28,7 @@ class PlayTask extends BasicTask
      */
     public function getPossibleParams()
     {
-        return [
-            'name' => 'your name'
-        ];
+        return [];
     }
 
     /**
@@ -46,7 +38,7 @@ class PlayTask extends BasicTask
      */
     public function getCommands()
     {
-        return ['play'];
+        return ['schedule'];
     }
 
     /**
@@ -57,16 +49,10 @@ class PlayTask extends BasicTask
     public function getHelp()
     {
         print('Help:') . PHP_EOL;
-        print('  Play a say hello') . PHP_EOL . PHP_EOL;
+        print('  run schedule') . PHP_EOL . PHP_EOL;
 
         print('Usage:') . PHP_EOL;
-        print('  play [name] ') . PHP_EOL . PHP_EOL;
-
-        print('Argumen./composerts:') . PHP_EOL;
-        print('  play');
-        print("\tsay hello") . PHP_EOL . PHP_EOL;
-
-        $this->printParameters($this->getPossibleParams());
+        print('  schedule ') . PHP_EOL . PHP_EOL;
     }
 
     /**
