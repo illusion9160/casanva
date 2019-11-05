@@ -2,12 +2,15 @@
 
 namespace App\Cron;
 
+use App\Cron\Helper\Frequencies;
 use Cron\CronExpression;
 use DateTime;
 use Phalcon\Di\Injectable;
 
 abstract class Job extends Injectable implements \Sid\Cron\JobInterface
 {
+    use Frequencies;
+
     /**
      * @var string
      */

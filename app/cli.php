@@ -7,35 +7,17 @@ use Phalcon\Cli\Console as ConsoleApp;
 
 require dirname(__FILE__) . '/bootstrap/autoload.php';
 
-// Using the CLI factory default services container
-$di = new CliDI();
-$di->get('dispatcher')->setDefaultNamespace('App\Console');
-$di->get('dispatcher')->setDefaultNamespace('App\Cron');
-$di->get('dispatcher')->setDefaultNamespace('App\Tasks');
-
-// Create a console application
-$console = new ConsoleApp();
-$di->setShared('console', $console);
-
-$schedule = new \App\Cron\Schedule($di);
-$di = $schedule->cron();
-
-$console->setDI($di);
-
-$command = new \App\Console\Command($console);
-
-$tasks = glob(BASIC_PATH . 'app/tasks/*Task.php');
-$ns = '\App\Tasks\\';
-
-foreach ($tasks as $task) {
-    $name = basename($task, '.php');
-    if ($name != 'BasicTask') {
-        $className = $ns . $name;
-        $command->setCommand(new $className());
-    }
-}
-
 try {
+    // Using the CLI factory default services container
+    $di = new CliDI();
+
+    // Create a console application
+    $console = new ConsoleApp();
+
+    // Setting CLI and Console
+    $cliDI = new \App\Console\CliSetUp($di, $console);
+    $command = $cliDI->handle();
+
     // execute command
     $command->run();
 } catch (\Phalcon\Exception $e) {

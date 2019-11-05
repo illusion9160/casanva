@@ -12,10 +12,32 @@ use Phalcon\DiInterface;
 */
 class Schedule
 {
+    const CRON_INITIAL = '* * * * *';
+
     /**
-    * 依賴注入物件
+    * @var 依賴注入物件
     */
     protected $di;
+
+    /**
+    * @var 事件
+    */
+    protected $events = [];
+
+    /**
+    * @var 閉包
+    */
+    protected $cronCallback = [];
+
+    /**
+    * @var Phalcon 命令
+    */
+    protected $cronPhalcon = [];
+
+    /**
+    * @var 系統命令
+    */
+    protected $cronSystem = [];
 
     public function __construct(DiInterface $di)
     {
@@ -29,37 +51,15 @@ class Schedule
     */
     public function cron()
     {
+        $events = $this->events;
         $this->di->set(
             'cron',
-            function () {
+            function () use ($events) {
                 $cron = new Manager();
 
-                $cron->add(
-                    new CronCallback(
-                        "* * * * *",
-                        function () {
-                            // ...
-                            echo 'callback';
-                        }
-                    )
-                );
-
-                $cron->add(
-                    new CronPhalcon(
-                        "* * * * *",
-                        [
-                            'task'   => 'play',
-                            'params' => ['casanova']
-                        ]
-                    )
-                );
-
-                // $cron->add(
-                //     new CronSystem(
-                //         "* 0 * * *",
-                //         "sh backup.sh"
-                //     )
-                // );
+                foreach ($events as $event) {
+                    $cron->add($event);
+                }
 
                 return $cron;
             }
@@ -68,8 +68,53 @@ class Schedule
         return $this->di;
     }
 
-    public function command()
+    /**
+    * 使用 callback
+    */
+    public function call(callable $callback, array $params = [])
     {
-        $this->di->get('console');
+        $this->events[] = $event = new CronCallback(
+            self::CRON_INITIAL,
+            $callback
+        );
+
+        return $event;
+    }
+
+    /**
+    * 使用 command call
+    */
+    public function command($command, array $params = [])
+    {
+        if (empty($params)) {
+            $paramList = explode(' ', trim($command));
+            if (count($paramList) !== 1) {
+                $command = array_shift($paramList);
+                $params = $paramList;
+            }
+        }
+
+        $this->events[] = $event = new CronPhalcon(
+            self::CRON_INITIAL,
+            [
+                'task'   => $command,
+                'params' => $params
+            ]
+        );
+
+        return $event;
+    }
+
+    /**
+    * 使用 系統命令
+    */
+    public function exec($command, array $params = [])
+    {
+        $this->events[] = $event = new CronSystem(
+            self::CRON_INITIAL,
+            $command
+        );
+
+        return $event;
     }
 }
