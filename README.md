@@ -15,8 +15,8 @@
 - ./phpcli cli.php [命令動作] [參數] (命令動作及參數包含 --help -h help 列出命令列表或命令幫助)
 
 # 資料庫設定
-- cd app/config
-- cp config.ini.example config.ini
+- cd app/
+- cp .env.yml.example .env.yml
 - 修改資料夾及資料庫相關設定
 
 # 新增 command 設定

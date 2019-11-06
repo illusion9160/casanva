@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace App\Console;
 
 use App\Cron\Schedule;
-use Phalcon\Config\Adapter\Ini;
+use Phalcon\Config\Adapter\Yaml;
 use Phalcon\Cli\Console as ConsoleApp;
 use Phalcon\Di\FactoryDefault\Cli as CliDI;
 
@@ -28,7 +28,7 @@ class CliSetUp
     protected $schedule;
 
     /**
-    * @var Phalcon\Config\Adapter\Ini
+    * @var \Phalcon\Config\Adapter\Yaml
     */
     protected $config;
 
@@ -37,7 +37,7 @@ class CliSetUp
     *
     * @param \Phalcon\Di\FactoryDefault\Cli $cliDI
     */
-    public function __construct(CliDI $cliDI, ConsoleApp $console, Ini $config)
+    public function __construct(CliDI $cliDI, ConsoleApp $console, Yaml $config)
     {
         $this->cliDI = $cliDI;
         $this->console = $console;
@@ -79,7 +79,7 @@ class CliSetUp
         $this->schedule = new Schedule($this->cliDI);
 
         $scheduleFiles = glob(
-            BASIC_PATH . $this->config->phalcon->schedulesDir . '*.php'
+            BASIC_PATH . $this->config->phalcon->dir->schedules . '*.php'
         );
 
         foreach ($scheduleFiles as $file) {
@@ -110,7 +110,7 @@ class CliSetUp
 
         $ns = '\App\Tasks\\';
         $tasks = glob(
-            BASIC_PATH . $this->config->phalcon->tasksDir . '*Task.php'
+            BASIC_PATH . $this->config->phalcon->dir->tasks . '*Task.php'
         );
 
         foreach ($tasks as $task) {

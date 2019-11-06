@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Test\Unit\Console;
 
 use App\Console\CliSetUp;
-use Phalcon\Config\Adapter\Ini;
+use Phalcon\Config\Adapter\Yaml;
 use Phalcon\Cli\Console as ConsoleApp;
 use Phalcon\Di\FactoryDefault\Cli as CliDI;
 
@@ -27,7 +27,7 @@ class CliSetUpTest extends \Codeception\Test\Unit
         $this->cliSetUp = new CliSetUp(
             new CliDI(),
             new ConsoleApp(),
-            new Ini('config.ini')
+            new Yaml('.env.yml')
         );
     }
 
