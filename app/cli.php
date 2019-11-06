@@ -15,7 +15,7 @@ try {
     $console = new ConsoleApp();
 
     // Setting CLI and Console
-    $cliDI = new \App\Console\CliSetUp($di, $console);
+    $cliDI = new \App\Console\CliSetUp($di, $console, $config);
     $command = $cliDI->handle();
 
     // execute command

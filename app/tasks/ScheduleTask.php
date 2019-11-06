@@ -18,6 +18,11 @@ class ScheduleTask extends BasicTask
     */
     public function mainAction(array $params)
     {
+        /**
+        * 若需訪問 cron 輸出可使用 ->runInForeground()
+        * ->runInBackground() 返回 Process instances.陣列
+        * ->runInForeground() 返回 輸出陣列
+        */
         $this->cron->runInBackground();
     }
 

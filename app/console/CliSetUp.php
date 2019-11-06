@@ -3,8 +3,9 @@ declare(strict_types=1);
 namespace App\Console;
 
 use App\Cron\Schedule;
-use Phalcon\Di\FactoryDefault\Cli as CliDI;
+use Phalcon\Config\Adapter\Ini;
 use Phalcon\Cli\Console as ConsoleApp;
+use Phalcon\Di\FactoryDefault\Cli as CliDI;
 
 /**
 * 設定 cliDI
@@ -27,14 +28,20 @@ class CliSetUp
     protected $schedule;
 
     /**
+    * @var Phalcon\Config\Adapter\Ini
+    */
+    protected $config;
+
+    /**
     * Cli Definition
     *
     * @param \Phalcon\Di\FactoryDefault\Cli $cliDI
     */
-    public function __construct(CliDI $cliDI, ConsoleApp $console)
+    public function __construct(CliDI $cliDI, ConsoleApp $console, Ini $config)
     {
         $this->cliDI = $cliDI;
         $this->console = $console;
+        $this->config = $config;
     }
 
     /**
@@ -65,21 +72,19 @@ class CliSetUp
     }
 
     /**
-    * 定義排程
+    * 載入排程
     */
     protected function scheduleSetting()
     {
         $this->schedule = new Schedule($this->cliDI);
-        /**
-        * 定義要用的排程
-        * 1. $this->schedule->call()     使用callback
-        * 2. $this->schedule->command()  使用phalcon command
-        * 3. $this->schedule->exec()     使用系統指令
-        */
 
-        // $this->schedule->call(function () {
-        //     echo 'hello, world' . PHP_EOL;
-        // })->everyMinute();
+        $scheduleFiles = glob(
+            BASIC_PATH . $this->config->phalcon->schedulesDir . '*.php'
+        );
+
+        foreach ($scheduleFiles as $file) {
+            include $file;
+        }
     }
 
     /**
@@ -104,7 +109,9 @@ class CliSetUp
         $command = new Command($this->console);
 
         $ns = '\App\Tasks\\';
-        $tasks = glob(BASIC_PATH . 'app/tasks/*Task.php');
+        $tasks = glob(
+            BASIC_PATH . $this->config->phalcon->tasksDir . '*Task.php'
+        );
 
         foreach ($tasks as $task) {
             $name = basename($task, '.php');
